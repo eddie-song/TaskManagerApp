@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Platform, SafeAreaView, SectionList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, SafeAreaView, SectionList } from 'react-native';
 import { router } from 'expo-router';
 
+ // Home screen for the task manager app.
+ // Includes functions forask creation, completion toggling, and deletion.
+
+// Structure for tasks includnig task ID, name, descrption, and completion status
 interface Task {
   id: string;
   text: string;
   completed: boolean;
+  description: string;
 }
 
+// Home screen component
 const HomeScreen = () => {
+  // State variables including list of tasks, new task name, and new task description
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
+  const [newDescription, setNewDescription] = useState('');
 
   // Function to add a new task
   const addTask = () => {
@@ -21,9 +29,11 @@ const HomeScreen = () => {
           id: Date.now().toString(),
           text: newTask.trim(),
           completed: false,
+          description: newDescription.trim(),
         },
       ]);
       setNewTask('');
+      setNewDescription('');
     }
   };
 
@@ -41,12 +51,12 @@ const HomeScreen = () => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  // Stand in function to log out and return to login page
+  // Stand in function to handle log out and return to login page
   const handleLogout = () => {
     router.replace('/');
   };
 
-  // Separation of tasks into completed and incomplete
+  // Incomplete and completed task storage
   const incompleteTasks = tasks.filter(task => !task.completed);
   const completedTasks = tasks.filter(task => task.completed);
 
@@ -70,14 +80,19 @@ const HomeScreen = () => {
         onPress={() => toggleTask(item.id)}
       >
         <View style={[styles.checkbox, item.completed && styles.checked]} />
-        <Text
-          style={[
-            styles.taskText,
-            item.completed && styles.completedTask,
-          ]}
-        >
-          {item.text}
-        </Text>
+        <View style={styles.taskDetails}>
+          <Text
+            style={[
+              styles.taskText,
+              item.completed && styles.completedTask,
+            ]}
+          >
+            {item.text}
+          </Text>
+          {item.description && (
+            <Text style={styles.descriptionText}>{item.description}</Text>
+          )}
+        </View>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => deleteTask(item.id)}
@@ -98,14 +113,14 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        {/* Headers */}
+        {/* Headers for the home screen */}
         <View style={styles.header}>
           <Text style={styles.title}>My Tasks</Text>
           <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
             <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
         </View>
-        {/* Input for new task */}
+        {/* Input for new task name and description */}
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -115,11 +130,19 @@ const HomeScreen = () => {
             onSubmitEditing={addTask}
             returnKeyType="done"
           />
+          <TextInput
+            style={[styles.input, styles.descriptionInput]}
+            placeholder="Description"
+            value={newDescription}
+            onChangeText={setNewDescription}
+            multiline={true}
+            numberOfLines={4}
+          />
           <TouchableOpacity style={styles.addButton} onPress={addTask}>
             <Text style={styles.addButtonText}>Add</Text>
           </TouchableOpacity>
         </View>
-        {/* Task List */}
+        {/* Task list separated by completed and incomplete tasks */}
         <SectionList
           sections={sections}
           keyExtractor={(item) => item.id}
@@ -133,7 +156,6 @@ const HomeScreen = () => {
   );
 };
 
-// Styling
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -164,12 +186,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   inputContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginBottom: 20,
     gap: 10,
   },
   input: {
-    flex: 1,
     height: 50,
     borderWidth: 1,
     borderColor: '#E5E5EA',
@@ -178,6 +199,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     backgroundColor: '#F2F2F7',
     fontFamily: Platform.select({ ios: 'SF Pro Text', android: 'sans-serif' }),
+  },
+  descriptionInput: {
+    height: 80,
+    textAlignVertical: 'top',
+    paddingTop: 12,
   },
   addButton: {
     backgroundColor: '#007AFF',
@@ -234,6 +260,10 @@ const styles = StyleSheet.create({
   checked: {
     backgroundColor: '#007AFF',
   },
+  taskDetails: {
+    flex: 1,
+    marginLeft: 12,
+  },
   taskText: {
     fontSize: 17,
     color: '#000',
@@ -250,6 +280,13 @@ const styles = StyleSheet.create({
     color: '#FF3B30',
     fontSize: 24,
     fontWeight: '600',
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: '#8E8E93',
+    fontFamily: Platform.select({ ios: 'SF Pro Text', android: 'sans-serif' }),
+    lineHeight: 20,
+    marginTop: 4,
   },
 });
 

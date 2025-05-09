@@ -10,6 +10,19 @@
    -  Once installed, open Android Studio and go to Device Manager
    -  Choose a device and press play to activate the Android Emulator
    -  Clone the github repository and cd into the folder
-   -  Run `npm start` and when prompted, type a
+   -  Start the app using `npm start` and when prompted, type a
 
 ## Features of the app:
+
+   -  Sample login and signup pages: Placeholder registration and authentication pages
+   -  Create tasks: Add new tasks with titles and optional descriptions with real-time updating
+   -  Completion toggling: Mark tasks as complete or incomplete to move them to separate lists
+   -  Delete tasks: Remove unneeded tasks from the completed and incomplete task lists
+   -  Task list: Separate task list views to show both complete and incomplete tasks
+
+## Libraries
+
+   -  Only react-native components were used in this project
+   -  The only third party library used was expo-router
+      -  This library was used for application navigation
+      -  To switch between pages, urls were pushed to the router to change the page

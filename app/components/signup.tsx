@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import { router } from 'expo-router';
 
+// Sign up page for the task manager app
+// Includes demo signup functionalities and login page redirect
+// Signup functionality is not implemented, but the placeholder function logs user info to console
+
+// Signup page component
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Stand in function for signing in
+  // Placeholder function for signing up
+  // Logs user info to console, then redirects to home page
   const handleSignUp = () => {
     console.log('Signup attempted with:', email, password);
     router.push('/components/home');
@@ -25,12 +31,12 @@ const SignUpScreen = () => {
         style={styles.container}
       >
         <View style={styles.contentContainer}>
-          {/* Headers */}
+          {/* Headers for the signup page */}
           <View style={styles.headerContainer}>
             <Text style={styles.title}>Create Account</Text>
             <Text style={styles.subtitle}>Sign up to get started</Text>
           </View>
-          {/* Text Inputs */}
+          {/* Text inputs for email, password, and confirm password */}
           <View style={styles.formContainer}>
             <View style={styles.inputWrapper}>
               <TextInput
@@ -63,7 +69,7 @@ const SignUpScreen = () => {
                 placeholderTextColor="#8E8E93"
               />
             </View>
-            {/* Submission Button */}
+            {/* Submission button that logs user info to console */}
             <TouchableOpacity 
               style={styles.signUpButton} 
               onPress={handleSignUp}
@@ -71,7 +77,7 @@ const SignUpScreen = () => {
             >
               <Text style={styles.signUpButtonText}>Create Account</Text>
             </TouchableOpacity>
-            {/* Login Page Redirect */}
+            {/* Redirect button to login page */}
             <View style={styles.loginContainer}>
               <Text style={styles.loginText}>Already have an account? </Text>
               <TouchableOpacity onPress={handleBackToLogin} activeOpacity={0.7}>
@@ -85,7 +91,6 @@ const SignUpScreen = () => {
   );
 };
 
-// Styling
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
